@@ -1,6 +1,17 @@
 # onsen
 internet radio 音泉(onsen) downloader.
 
+# necessary packages
+
+- jq
+- curl
+
+Debian & Ubuntu
+
+```
+$ sudo apt install jq curl
+```
+
 # usage
 
 ```
