@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z $1 ];then
+	echo "Usage: $0 PROGRAMNAME" 1>&2
+	echo "http://www.onsen.ag/program/PROGRAMNAME/" 1>&2
+	exit 1
+fi
+
+PROGRAMNAME=$1
+
+GETINFO=$(curl http://www.onsen.ag/data/api/getMovieInfo/$PROGRAMNAME | sed -e s/^callback\(// | sed -e 's/);//')
+TITLE=$(echo $GETINFO | jq -r '.title' | sed -e 's/\n//g')
+UPDATE=$(echo $GETINFO | jq -r '.update' | sed -e 's/\n//g')
+COUNT=$(echo $GETINFO | jq -r '.count' | sed -e 's/\n//g')
+MP3=$(echo $GETINFO | jq -r '.moviePath.pc' | sed -e 's/\n//g')
+SCHEDULE=$(echo $GETINFO | jq -r '.schedule' | sed -e 's/\n//g')
+
+echo "$TITLE $COUNT $UPDATE $SCHEDULE ($MP3)"
+FILE=${TITLE}_${COUNT}_${UPDATE}.mp3
+curl $MP3 -o "$FILE"
+
